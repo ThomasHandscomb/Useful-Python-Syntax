@@ -510,7 +510,7 @@ api_call()
 #######################
 
 # Allows you to apply user defined functioned to multiple dataframe columns
-
+import pandas as pd
 # Create a simple data frame
 Sample_df = pd.DataFrame({'Price': [2,3,3,3,3, 4, 4, 4, 5,5, 6, 7, 8, 9, 15]})
 Sample_df
@@ -523,14 +523,19 @@ Sample_df
 # First define the custom logic function
 def custom_col(col):
     if col>= 5:
-        return 'Above'
+        outcome = 'Above'        
     else:
-        return 'Below'
+        outcome = 'Below'
+    return outcome
 
 custom_col(Sample_df['Price'])
 
 # Then apply the custom logic function to the columns needed        
 Sample_df['New_Col_Lambda'] = Sample_df.apply(lambda x: custom_col(x['Price']), axis = 1)
+Sample_df
+
+# Or can specify the column to apply to in front of the 'apply' function
+Sample_df['New_Col_Lambda_2'] = Sample_df['Price'].apply(lambda x: custom_col(x))
 Sample_df
 
 # Can define a custom function on multiple columns
