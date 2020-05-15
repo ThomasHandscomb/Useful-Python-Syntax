@@ -1,8 +1,8 @@
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Title: Python Training and Reference Syntax
 # Purpose: A collection of useful Python code examples
 # Author: Thomas Handscomb
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #############################
 # Scheduling Python functions
@@ -329,6 +329,7 @@ from glob import glob
 import pandas as pd
 # Select all files into a list using *wildcard
 files = glob('C:\\Users\\Tom\\Desktop\\GitHub Page\\Blog Repos\\Useful-Python-Syntax\\File*.xlsx')
+#files = glob('https://github.com/ThomasHandscomb/Useful-Python-Syntax/blob/master/File*.xlsx')
 
 # prints the filenames and the data
 for f in files:
@@ -387,10 +388,12 @@ time_list_end - time_list_start # microseconds=21913
 # I've heard a rule of thumb is you need 2 to 3 times the RAM of the size of your data you're working with, or even 5x if using (the excellent) pandas module
 
 # A useful method is break the data set up into smaller pieces using chunksize, (usecols can also be useful to only bring in the columns that you need)
-Df_large_chunk = pd.read_csv('C:\\Users\\Tom\\Desktop\\GitHub Page\\Blog Repos\\Useful-Python-Syntax\\ChunkFile.csv'
+Df_large_chunk = pd.read_csv('https://github.com/ThomasHandscomb/Useful-Python-Syntax/raw/master/ChunkFile.csv'                       
                        , encoding = "ISO-8859-1"
-                       , usecols=[0,1]
+                       , header = 0
+                       , usecols = ['ID', 'Variable1']
                        , chunksize=5)
+
 for chunk in Df_large_chunk:
     # perform data filtering 
     print(chunk)    
@@ -401,12 +404,13 @@ for chunk in Df_large_chunk:
 def chunk_preprocessing(dframe):
     return pd.DataFrame(dframe.iloc[:,0])
 
-# Then iterate the 'processing' function over each chunk and stitch together
-Df_large_chunk = pd.read_csv('C:\\Users\\Tom\\Desktop\\GitHub Page\\Blog Repos\\Useful-Python-Syntax\\ChunkFile.csv'
+# Then iterate the 'processing' function over each chunk and stitch together. Note that the chunk file is not
+# stored in memory and so needs to be run again here along with the Chunk_Colsol line
+Df_large_chunk = pd.read_csv('https://github.com/ThomasHandscomb/Useful-Python-Syntax/raw/master/ChunkFile.csv'                       
                        , encoding = "ISO-8859-1"
-                       , usecols = [0,1]
+                       , header = 0
+                       , usecols = ['ID', 'Variable1']
                        , chunksize=5)
-
 Chunk_Colsol = pd.concat((chunk_preprocessing(chunk) for chunk in Df_large_chunk), axis='rows')
 
 # View the final dataframe, constructed as the consolidation of the processed chunks
@@ -515,6 +519,8 @@ import pandas as pd
 Sample_df = pd.DataFrame({'Price': [2,3,3,3,3, 4, 4, 4, 5,5, 6, 7, 8, 9, 15]})
 Sample_df
 
+Sample_df.dtypes
+
 # Create a single column with list comprehension
 Sample_df['New_Col_Simple'] = ['Above' if x >=5 else 'Below' for x in Sample_df['Price']]
 Sample_df
@@ -596,3 +602,37 @@ for i in range(0, len(list(create_df()))):
     data = list(create_df())[i][1]
     print(name)
     print(data)
+    
+##########################################
+# Common uses of Python and useful modules
+##########################################
+# Use 1: 
+    # Web Development 
+# Modules: 
+    # Requests
+    # Django (web framework to make websites)
+    # Flask (lighter weight web framework than Django)
+    # Beautiful Soup (for HTML scraping)
+    # Selenium (for website interation)
+    
+# Use 2:
+    # Data Science
+# Modules:
+    # numpy (allows mathematical operations, implemented in C so much quicker than equivalent in base python)
+    # pandas (reading and working with data frames)
+    # matplotlib (data visualisation)
+    # nltk (NLP or text preprocessing)
+    # opencv (image and video data processing)
+
+# Use 3:
+    # Machine Learning
+# Modules:
+    # Tensorflow
+    # keras (a higher level API for tensorflow, allows easier access to TensorFlow features)
+    # pytorch
+    # sci-kit learn (lighter weight for regression and classification problems)
+    
+# Use 4:
+    # Building graphical user interfaces
+# Modules:
+    # PyQt5 (GUI/desktop application builder. What Spyder IDE is built with)    
