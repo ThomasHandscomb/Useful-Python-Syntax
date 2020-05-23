@@ -602,6 +602,40 @@ for i in range(0, len(list(create_df()))):
     data = list(create_df())[i][1]
     print(name)
     print(data)
+
+##########
+# Plotting
+##########
+import matplotlib.pyplot as plt
+
+# Create dataframe
+simulation_df = pd.DataFrame(np.random.randint(4, size = 100)).reset_index()
+simulation_df.columns = ('Simulation', 'Interaction_Count')
+
+pivot = simulation_df.groupby(['Interaction_Count'], as_index=False).count()
+
+plt.style.use('ggplot')
+
+#~~~~~~~~~~~~~~~
+# Plot bar chart
+# (x, height)
+bars = plt.bar(x=pivot['Interaction_Count'], height=pivot['Simulation'], width = 0.4)
+plt.title('Distribution of scores')
+plt.ylabel('Count')
+plt.xlabel('Scores')
+#plt.show()
+number_pixel_width = 0.05
+# This writes the text (3rd parameter) at the (x,y,text) coordinates
+for bar in bars:
+    plt.text(bar.get_x() + bar.get_width()/2 - number_pixel_width, bar.get_height() + 0.5, bar.get_height())
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plot histogram with labels
+arr = plt.hist(simulation_df['Interaction_Count'], bins = 8)
+for i in range(8):
+    plt.text(arr[1][i]+0.1
+             , arr[0][i]+0.15
+             , str("") if arr[0][i] == 0 else str(arr[0][i].astype(int)))
     
 ##########################################
 # Common uses of Python and useful modules
