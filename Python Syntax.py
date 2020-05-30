@@ -268,7 +268,7 @@ sentiment_df.head(10)
 
 
 # Can subset just rows
-sentiment_df[0:10] # Gives a datafrane of the first 10 rows, all columns
+sentiment_df[0:10] # Gives a dataframe of the first 10 rows, all columns
 sentiment_df[:10] # Gives the same first 10 rows
 
 # Can use loc (location) to specify the rows by the index
@@ -581,9 +581,10 @@ sampledata_df = pd.DataFrame({'state': ['Ohio','Ohio','Ohio','Nevada','Nevada'],
 # Say you wanted to create 3 dataframes fromt the above, each containing a single year
 # For example:
 for year in sampledata_df['year'].unique():
-    df = 'df_%i' %(year)
-    print(df)
-    df = sampledata_df[sampledata_df['year'] == year]    
+    df_name = 'df_%i' %(year)
+    print(df_name)
+    df_name = sampledata_df[sampledata_df['year'] == year]
+    print(df_name)
 
 df_2000 # NameError: name 'df_2000' is not defined
     
@@ -603,6 +604,15 @@ for i in range(0, len(list(create_df()))):
     print(name)
     print(data)
 
+# Using dictionaries
+d = {}
+for i in range(10):
+    d['x_%s' %(i)] = i
+
+print(d)
+type(d)
+d['x_0']
+
 ##########
 # Plotting
 ##########
@@ -614,6 +624,7 @@ simulation_df.columns = ('Simulation', 'Interaction_Count')
 
 pivot = simulation_df.groupby(['Interaction_Count'], as_index=False).count()
 
+# Define a visually appealing plot style
 plt.style.use('ggplot')
 
 #~~~~~~~~~~~~~~~
