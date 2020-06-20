@@ -485,6 +485,12 @@ Sample_df[['Price_ZScaled']].hist(bins = 10, edgecolor = 'black')
 Sample_df[['Price_PTileScaled']].hist(bins = 10, edgecolor = 'black')
 Sample_df[['Price_NormScaled']].hist(bins = 10, edgecolor = 'black')
 
+# Can also preserve distribution and convert to a specific min/max range
+MinMaxScaler_Range = MinMaxScaler(feature_range=(0.25, 1))
+Sample_df['Price_Range_MinMaxScaled'] = MinMaxScaler_Range.fit_transform(Sample_df[['Price']])
+Sample_df['Price_Range_MinMaxScaled'].describe()
+
+Sample_df[['Price_Range_MinMaxScaled']].hist(bins = 10, edgecolor = 'black')
 
 #################
 # API via Python
@@ -570,6 +576,15 @@ site.getsitepackages()[1]
 # If these are different this may explain why pip install <module name> works however import <module name> in python throws a 'module not found' error
 # You should use the version of Anaconda Prompt in the same Anaconda distribution as the Spyder that you're using
 
+######################
+# Run Jupyter Notebook
+######################
+
+# within cmd, navigate to the folder where the jupyter notebook is saved
+# and run <jupyter notebook>
+# then open http://localhost:8888/ in a browser  
+
+
 ###############################################################
 # Using 'Yield' within a function and loop to create dataframes
 ###############################################################
@@ -647,6 +662,28 @@ for i in range(8):
     plt.text(arr[1][i]+0.1
              , arr[0][i]+0.15
              , str("") if arr[0][i] == 0 else str(arr[0][i].astype(int)))
+
+##########
+# DateTime
+##########
+from dateutil.relativedelta import relativedelta
+
+df_TimeSeries = pd.read_csv('C:/Users/Tom/Desktop/GitHub Page/Blog Repos/Real-World-Time-Series-Analysis/SectorSales.csv'
+                     , encoding = "ISO-8859-1", header=0
+                     , usecols = ['Date','Sector', 'Universe Gross Sales EUR M', 'Universe Net Sales EUR M']                      
+                     #, parse_dates=["Date"]
+                     , index_col = ["Date"])
+
+# Care needs to be shown with indexes when working with Time Series, can set the Date column to be the index
+# when reading above however cast as datetime as separate line below
+df_TimeSeries.index
+df_TimeSeries.index = pd.to_datetime(df_TimeSeries.index, format="%d/%m/%Y")
+
+row = df_TimeSeries[-1:]
+
+# Increment a date by a month
+row.index = pd.to_datetime(row.index.date + relativedelta(months=+1) , format="%Y-%m-%d")
+
     
 ##########################################
 # Common uses of Python and useful modules
