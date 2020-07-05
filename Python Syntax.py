@@ -684,7 +684,70 @@ row = df_TimeSeries[-1:]
 # Increment a date by a month
 row.index = pd.to_datetime(row.index.date + relativedelta(months=+1) , format="%Y-%m-%d")
 
+# Extract time components
+df_TimeSeries_exrt = pd.read_csv('C:/Users/Tom/Desktop/GitHub Page/Blog Repos/Real-World-Time-Series-Analysis/SectorSales.csv'
+                     , encoding = "ISO-8859-1", header=0
+                     , usecols = ['Date','Sector', 'Universe Gross Sales EUR M', 'Universe Net Sales EUR M']                      
+                     )
+
+
+df_TimeSeries_exrt['Date'] = pd.to_datetime(df_TimeSeries_exrt['Date'], format = "%d/%m/%Y") 
+
+df_TimeSeries_exrt['day'] = df_TimeSeries_exrt['Date'].dt.day
+df_TimeSeries_exrt['week'] = df_TimeSeries_exrt['Date'].dt.week
+df_TimeSeries_exrt['month'] = df_TimeSeries_exrt['Date'].dt.month
+df_TimeSeries_exrt['year'] = df_TimeSeries_exrt['Date'].dt.year
+
+df_TimeSeries_exrt['week_year'] = df_TimeSeries_exrt['Date'].dt.strftime('%Y-%U')
+
+df_TimeSeries_exrt[df_TimeSeries_exrt['Date'] == '2020-02-20']
+
+
+##############
+# Merging data
+##############
+
+leftdata_df = pd.DataFrame({'state': ['Ohio','Ohio','Ohio','Nevada','Nevada'],
+           'date': ['2016-01-01', '2016-01-02', '2016-01-03', '2016-01-04', '2016-02-26'],
+           'pop': [1.5,1.7,3.6,2.4,2.9]})
+
+# Cast date as datetime
+leftdata_df['date'] = pd.to_datetime(leftdata_df['date'], format = "%Y-%m-%d")
+leftdata_df.info()
+
+
+rightdata_df = pd.DataFrame({'city': ['Ohio','City2','City3','Nevada'],
+          'date': ['2016-01-01', '2016-01-02', '2016-01-03', '2016-01-04'],
+           'flag': [1, 2, 3, 4]})
+
+#Cast date as datetime
+rightdata_df['date'] = pd.to_datetime(rightdata_df['date'], format = "%Y-%m-%d")
+# Make date the index here
+rightdata_df.set_index('date', inplace = True)
+rightdata_df
     
+# Left join on date only
+merged_df_left = leftdata_df.merge(rightdata_df['flag'], on = 'date', how = 'left')
+merged_df_left
+
+# Inner join on date only
+merged_df_inner = leftdata_df.merge(rightdata_df['flag'], on = 'date', how = 'inner')
+merged_df_inner
+
+# Left join on date and city
+leftdata_df
+rightdata_df
+rightdata_df[['city', 'flag']]
+
+second_merged_df = leftdata_df.merge(rightdata_df[['city', 'flag']]
+                    , left_on = ['date', 'state']
+                    , right_on = ['date', 'city']
+                    , how = 'left').drop(['city'], axis = 1)
+
+second_merged_df
+
+second_merged_df['date'].dt.month
+
 ##########################################
 # Common uses of Python and useful modules
 ##########################################
