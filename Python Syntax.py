@@ -508,12 +508,14 @@ print(response.text)
 
 def api_call():
     if response.status_code == 200:
-        print(response.text)
+        return response.text
         #print(people.text)
     else:
         print("Error")
 
 api_call()
+
+# Research Python JSON formatter here
 
 #######################
 # Lambda apply function
@@ -748,6 +750,46 @@ second_merged_df
 
 second_merged_df['date'].dt.month
 
+###########
+# Pipelines
+###########
+from sklearn.pipeline import Pipeline
+
+# Chain link preprocessing and model building steps together
+
+# Start with some raw data
+leftdata_df = pd.DataFrame({'state': ['Ohio','Ohio','Ohio','Nevada','Nevada'],
+           'date': ['2016-01-01', '2016-01-02', '2016-01-03', '2016-01-04', '2016-02-26'],
+           'pop': [1.5,1.7,3.6,2.4,2.9]})
+ 
+leftdata_df
+
+# Say you wanted to first scale the data and then drop some rows
+temp = MinMaxScaler().fit_transform(leftdata_df[['pop']])
+
+MinMaxScaler(leftdata_df[['pop']])
+
+temp[0] = 
+
+# Define the constituent functions
+preprocessor = Pipeline(
+        [
+            ("scaler", MinMaxScaler())
+            #("pca", PCA(n_components=2, random_state=42)),
+        ]
+        )
+
+# Stitch together all the components into a full pipeline
+Full_Pipe = Pipeline(
+    [
+        ("preprocessor", preprocessor)
+        #("clusterer", clusterer)
+    ]
+)
+
+# Call the pipeline
+p = Full_Pipe.fit(leftdata_df[['pop']])
+
 ##########################################
 # Common uses of Python and useful modules
 ##########################################
@@ -780,4 +822,4 @@ second_merged_df['date'].dt.month
 # Use 4:
     # Building graphical user interfaces
 # Modules:
-    # PyQt5 (GUI/desktop application builder. What Spyder IDE is built with)    
+    # PyQt5 (GUI/desktop application builder. This is what Spyder IDE is built with)
