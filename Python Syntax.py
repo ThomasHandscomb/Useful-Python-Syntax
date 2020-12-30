@@ -321,6 +321,54 @@ df_Test
 # Here's the size of the test DataFrame:
 df_Test.info(memory_usage='deep')
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Python has a datatable library to mimic R's data.table
+import datatable as dt
+from datatable import f, by
+import numpy as np
+
+sentiment_dt = dt.fread('https://github.com/clairett/pytorch-sentiment-classification/raw/master/data/SST2/train.tsv'
+                        , columns = ['Text', 'Flag'])
+type(sentiment_dt)
+
+# Just calling a function returns an object name...
+sentiment_dt.head(5)
+
+# ... need to explicitly print it to view in the console
+print(sentiment_dt.head(5))
+print(sentiment_dt[:, 'Flag'])
+x = sentiment_dt[:, dt.count(), by('Flag')]
+print(x)
+sentiment_dt.stypes
+
+# See https://datatable.readthedocs.io/en/latest/manual/comparison_with_rdatatable.html
+# for a comparison of syntax to R's data.table
+
+print(sentiment_dt[f.Flag == 1, :])
+print(sentiment_dt[:, dt.sum(f.Flag)][0,0])
+print(sentiment_dt[:, dt.count(f.Flag)])
+
+# After reading, can convert to a pandas dataframe - can be quicker to read in as data.table and convert
+# to a data.frame than simply reading as a pandas data.frame
+import time
+start = time.time()
+sentiment_dt = dt.fread('https://github.com/clairett/pytorch-sentiment-classification/raw/master/data/SST2/train.tsv'
+                        , columns = ['Text', 'Flag'])
+sentiment_dt_to_df = sentiment_dt.to_pandas()
+end = time.time()
+print(end - start) # 1.003406286239624 seconds
+
+# vs.
+start = time.time()
+sentiment_df = pd.read_csv('https://github.com/clairett/pytorch-sentiment-classification/raw/master/data/SST2/train.tsv', delimiter='\t', header=None)
+end = time.time()
+print(end - start) # 0.6937932968139648 seconds (ok so not a great example!)
+
+type(sentiment_dt_to_df)
+sentiment_dt_to_df.head(5)
+sentiment_dt_to_df.dtypes
+sentiment_dt_to_df.mean()
+
 ##################################################
 # Importing multiple files into a single DataFrame
 ##################################################
