@@ -769,7 +769,7 @@ temp = MinMaxScaler().fit_transform(leftdata_df[['pop']])
 
 MinMaxScaler(leftdata_df[['pop']])
 
-temp[0] = 
+#temp[0] = 
 
 # Define the constituent functions
 preprocessor = Pipeline(
